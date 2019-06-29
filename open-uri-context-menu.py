@@ -19,7 +19,7 @@ Adds context menu item to open an URI at the pointer position
 '''
 
 from gettext import gettext as _
-from gi.repository import Gtk, Gedit, Gio, GObject, GtkSource
+from gi.repository import Gtk, Xed, Gio, GObject, GtkSource
 import re
 import sys
 import os
@@ -30,9 +30,9 @@ ACCEPTED_SCHEMES = ['file', 'ftp', 'sftp', 'smb', 'dav', 'davs', 'ssh', 'http', 
 RE_DELIM = re.compile(r'[\w#/\?:%@&\=\+\.\\~-]+', re.UNICODE|re.MULTILINE)
 RE_URI_RFC2396 = re.compile("((([a-zA-Z][0-9a-zA-Z+\\-\\.]*):)?/{0,2}([0-9a-zA-Z;:,/\?@&=\+\$\.\-_!~\*'\(\)%]+))?(#[0-9a-zA-Z;,/\?:@&\=+$\.\\-_!~\*'\(\)%]+)?")
 
-class OpenURIContextMenuPlugin(GObject.Object, Gedit.WindowActivatable):
+class OpenURIContextMenuPlugin(GObject.Object, Xed.WindowActivatable):
 	__gtype_name__ = "OpenURIContextMenuPlugin"
-	window = GObject.property(type=Gedit.Window)
+	window = GObject.property(type=Xed.Window)
 
 	def __init__(self):
 		GObject.Object.__init__(self)
@@ -201,11 +201,11 @@ class OpenURIContextMenuPlugin(GObject.Object, Gedit.WindowActivatable):
 	def open_uri(self, uri):
 		doc = self.get_document_by_uri(uri)
 		if doc != None :
-			tab = Gedit.tab_get_from_document(doc)
+			tab = Xed.tab_get_from_document(doc)
 			self.window.set_active_tab(tab)
 		else:
 			self.window.create_tab_from_location(Gio.file_new_for_uri(uri),
-			                                     self.encoding, 0, 0, False, True)
+			                                     self.encoding, 0, 0, True)
 			status = self.window.get_statusbar()
 			status_id = status.push(status.get_context_id("OpenURIContextMenuPlugin"),
 			                        _("Loading file '%s'...") % (uri))

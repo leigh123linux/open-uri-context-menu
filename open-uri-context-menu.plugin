@@ -2,7 +2,7 @@
 Loader=python3
 Module=open-uri-context-menu
 IAge=3
-Name=Open URI Context Menu
+Name=Open URI
 Description=Adds context menu item to open an URI at the pointer position.
 Description[fr]=Ajoute une option dans le menu contextuel pour ouvrir l'URI située sous le curseur.
 Icon=gtk-open
